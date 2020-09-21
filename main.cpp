@@ -5,6 +5,7 @@
 void menuPrint();
 int menuSelect(int smallestItemNumber, int biggestItemNumber);
 
+// Array of pointers to functions
 void (*functionsList[])() = {
         listDrives,
         showDiskInfo,
@@ -13,22 +14,25 @@ void (*functionsList[])() = {
         createFile,
         copyFile,
         moveFile,
-        getFileInfo
+        getFileInfo,
+        setFileAttributes,
+        setFileTime
 };
 
 int main(){
-    int smallestItem = 0, biggestItem = 7;
+    int smallestItem = 0, biggestItem = 10;
     menuPrint();
     int val = menuSelect(smallestItem , biggestItem);
+
     while(val != 0){
         if (val != -1){
             (*functionsList[val-1])();
-            std::cout << "\nPress enter to return";
-            std::cin.get();
-            std::cin.get();
         }
+
+        // Clearing input to avoid input buffering
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         menuPrint();
         val = menuSelect(smallestItem , biggestItem);
     }
@@ -45,6 +49,9 @@ void menuPrint(){
     std::cout << "5. Create file (CreateFile)\n";
     std::cout << "6. Copy file (CopyFile)\n";
     std::cout << "7. Move file (MoveFile)\n";
+    std::cout << "8. Retrieve file info (GetFileAttributes, GetFileInformationByHandle, GetFileTime)\n";
+    std::cout << "9. Set file attributes (SetFileAttributes)\n";
+    std::cout << "10. Set file attributes (SetFileTime)\n";
     std::cout << "0. Exit";
     std::cout << "\n";
 }
