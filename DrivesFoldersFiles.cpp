@@ -266,21 +266,21 @@ void getFileInfo(){
              * Convert UTC to local time
              * NULL - function uses the currently active time zone.
              * */
-            SystemTimeToTzSpecificLocalTime(NULL, &timeUTC, &timeLocal);
+            SystemTimeToTzSpecificLocalTime(nullptr, &timeUTC, &timeLocal);
 
             std::cout << "Creation time: ";
             std::cout << timeLocal.wMonth << "/" << timeLocal.wDay << "/" << timeLocal.wYear << " " << timeLocal.wHour << ":" << timeLocal.wMinute << std::endl;
 
             // Handle last access time
             FileTimeToSystemTime(&fileLastAccessTime, &timeUTC);
-            SystemTimeToTzSpecificLocalTime(NULL, &timeUTC, &timeLocal);
+            SystemTimeToTzSpecificLocalTime(nullptr, &timeUTC, &timeLocal);
 
             std::cout << "Last access time: ";
             std::cout << timeLocal.wMonth << "/" << timeLocal.wDay << "/" << timeLocal.wYear << " " << timeLocal.wHour << ":" << timeLocal.wMinute << std::endl;
 
             // Handle last write time
             FileTimeToSystemTime(&fileLastWriteTime, &timeUTC);
-            SystemTimeToTzSpecificLocalTime(NULL, &timeUTC, &timeLocal);
+            SystemTimeToTzSpecificLocalTime(nullptr, &timeUTC, &timeLocal);
 
             std::cout << "Last write time: ";
             std::cout << timeLocal.wMonth << "/" << timeLocal.wDay << "/" << timeLocal.wYear << " " << timeLocal.wHour << ":" << timeLocal.wMinute << std::endl;

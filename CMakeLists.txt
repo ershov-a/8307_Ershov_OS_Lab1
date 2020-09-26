@@ -3,4 +3,4 @@ project(8307_Ershov_OS_Lab1)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(8307_Ershov_OS_Lab1 main.cpp DrivesFoldersFiles.cpp DrivesFoldersFiles.h)
+add_executable(8307_Ershov_OS_Lab1 main.cpp DrivesFoldersFiles.cpp DrivesFoldersFiles.h copyFileAsync.cpp copyFileAsync.h)

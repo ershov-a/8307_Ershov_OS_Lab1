@@ -1,0 +1,9 @@
+#ifndef INC_8307_ERSHOV_OS_LAB1_COPYFILEASYNC_H
+#define INC_8307_ERSHOV_OS_LAB1_COPYFILEASYNC_H
+
+#include <iostream>
+
+void copyFileAsync();
+
+
+#endif //INC_8307_ERSHOV_OS_LAB1_COPYFILEASYNC_H
