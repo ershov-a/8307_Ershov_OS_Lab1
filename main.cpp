@@ -80,7 +80,6 @@ int menuSelect(int smallestItemNumber, int biggestItemNumber){
         std::cout << "Try again" << std::endl;
         selectedItem = -1;
     }
-
     return selectedItem;
 }
 
