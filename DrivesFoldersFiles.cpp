@@ -1,8 +1,19 @@
+#include <shlwapi.h>
 #include "DrivesFoldersFiles.h"
+
+/* Return TRUE if file 'fileName' exists */
+bool checkFileExist(std::string fileName){
+    DWORD fileAttr;
+    fileAttr = GetFileAttributes(fileName.c_str());
+    if (0xFFFFFFFF == fileAttr)
+        return false;
+    return true;
+}
 
 void listDrives(){
 
-    // GetLogicalDrives() - get logical drives as bitmask, e.g. 0101 is disk A and C
+    // GetLogicalDrives() - get logical drives as bitmask,
+    // e.g. 00000000000000000000001100 is disk C and D
 
     // Get bitmask of available drives
     std::bitset<26> bs =  GetLogicalDrives();
@@ -112,6 +123,8 @@ void showDiskInfo(){
 
     // Show result
     std::cout << "free space: " << free << " / " << total << " MB" << std::endl;
+
+    std::cout << "sectorsPerCluster = " << sectorsPerCluster << "; bytesPerSector " << bytesPerSector << std::endl;
 }
 
 void createDirectory(){
@@ -179,15 +192,36 @@ void copyFile(){
     std::string copyFileName;
     std::cin >> copyFileName;
 
-    // TRUE (bFailIfExists) - If this parameter is TRUE and the new file specified by lpNewFileName already exists, the function fails.
-    // If this parameter is FALSE and the new file already exists, the function overwrites the existing file and succeeds.
-    BOOL isSuccess = CopyFile(fileName.c_str(), copyFileName.c_str(), TRUE);
+    // TRUE (bFailIfExists) - If this parameter is TRUE and the new file
+    // specified by lpNewFileName already exists, the function fails.
+    // If this parameter is FALSE and the new file already exists,
+    // the function overwrites the existing file and succeeds.
 
-    // Check file copying status
-    if (isSuccess){
-        std::cout << "Copy of file created successfully" << std::endl;
+    char answer;
+    if (checkFileExist(fileName)) {
+        if (checkFileExist(copyFileName)) {
+            std::cout << "Copy of file already exists. Do you want to overwrite it? (y/n)" << std::endl;
+            std::cin >> answer;
+            if (answer == 'y') {
+                BOOL isSuccess = CopyFile(fileName.c_str(), copyFileName.c_str(), FALSE);
+                if (isSuccess) {
+                    std::cout << "Copy of file created successfully (file was overwritten)" << std::endl;
+                } else {
+                    std::cout << "File is not copied" << std::endl;
+                }
+            } else {
+                std::cout << "File is not copied" << std::endl;
+            }
+        } else {
+            BOOL isSuccess = CopyFile(fileName.c_str(), copyFileName.c_str(), FALSE);
+            if (isSuccess) {
+                std::cout << "Copy of file created successfully" << std::endl;
+            } else {
+                std::cout << "Can not create copy of file" << std::endl;
+            }
+        }
     } else {
-        std::cout << "Can not create copy of file" << std::endl;
+        std::cout << "Original file doesn't exist. Try again" << std::endl;
     }
 }
 
@@ -200,14 +234,21 @@ void moveFile(){
     std::string newFileName;
     std::cin >> newFileName;
 
-    BOOL isSuccess = MoveFile(fileName.c_str(), newFileName.c_str());
-
-    if (isSuccess){
-        std::cout << "File moved successfully" << std::endl;
+    char answer;
+    if (checkFileExist(fileName)) {
+        if (checkFileExist(newFileName)) {
+            std::cout << "File named " << newFileName << " already exists. Original file is not moved" << std::endl;
+        } else {
+            BOOL isSuccess = MoveFile(fileName.c_str(), newFileName.c_str());
+            if (isSuccess) {
+                std::cout << "File moved successfully" << std::endl;
+            } else {
+                std::cout << "Can not move file" << std::endl;
+            }
+        }
     } else {
-        std::cout << "Can not move file" << std:: endl;
+        std::cout << "Original file doesn't exists. Try again" << std::endl;
     }
-
 }
 
 void getFileInfo(){
@@ -260,7 +301,7 @@ void getFileInfo(){
         SYSTEMTIME timeUTC, timeLocal;
 
         if (GetFileTime(fileHandle, &fileCreationTime, &fileLastAccessTime, &fileLastWriteTime)){
-            // handle creation time
+            // Handle creation time
             FileTimeToSystemTime(&fileCreationTime, &timeUTC);
             /*
              * Convert UTC to local time
@@ -300,7 +341,7 @@ void setFileAttributes(){
     DWORD newAttributes = 0;
     char answer;
 
-    // Use bitwise 'OR' and 'AND' to get new attributes
+    // Uses bitwise 'OR' and 'AND' to get new attributes
     std::cout << "Set normal attribute? (y/n)" << std::endl;
     std::cin >> answer;
     if (answer == 'y'){

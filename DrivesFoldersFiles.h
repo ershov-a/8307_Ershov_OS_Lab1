@@ -10,6 +10,8 @@
 #include <windows.h>
 #include <io.h>
 
+bool checkFileExist(std::string fileName);
+
 void listDrives();
 
 void showDiskInfo();
