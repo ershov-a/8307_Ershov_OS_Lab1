@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "DrivesFoldersFiles.h"
+#include "copyFileAsync.h"
 
 void menuPrint();
 int menuSelect(int smallestItemNumber, int biggestItemNumber);
@@ -16,11 +17,12 @@ void (*functionsList[])() = {
         moveFile,
         getFileInfo,
         setFileAttributes,
-        setFileTime
+        setFileTime,
+        copyFileAsync
 };
 
 int main(){
-    int smallestItem = 0, biggestItem = 10;
+    int smallestItem = 0, biggestItem = 11;
     menuPrint();
     int val = menuSelect(smallestItem , biggestItem);
 
@@ -52,6 +54,7 @@ void menuPrint(){
     std::cout << "8. Retrieve file info (GetFileAttributes, GetFileInformationByHandle, GetFileTime)\n";
     std::cout << "9. Set file attributes (SetFileAttributes)\n";
     std::cout << "10. Set file attributes (SetFileTime)\n";
+    std::cout << "11. Copy file async\n";
     std::cout << "0. Exit";
     std::cout << "\n";
 }
