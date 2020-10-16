@@ -1,7 +1,6 @@
 #include "copyFileAsync.h"
 
-// Размер блока
-int blockSize = 4096;
+int blockSize;
 int blockSizeFactor;
 CHAR **buffersArray;
 OVERLAPPED *overlappedInput, *overlappedOutput;
@@ -13,7 +12,8 @@ LONGLONG doneCount, blocksCount;
 int numberOfOverlappingOperations = 0;
 
 void copyFileAsync() {
-
+    // Устанавливаем начальный размер блока
+    blockSize = 4096;
     // Множитель размера блока
     blockSizeFactor = 1;
 
